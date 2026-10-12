@@ -3,11 +3,15 @@ import App from './App.vue'
 import HomeView from './views/HomeView/HomeView.vue'
 import EautopianView from './views/EautopianView/EautopianView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import RedirectView from './views/RedirectView.vue'
 
 
 const routes = [
     { path: '/', component: HomeView },
     { path: '/eautopian', component: EautopianView },
+    { path: '/discord', component: RedirectView },
+    { path: '/invite', component: RedirectView },
+    { path: '/buy', component: RedirectView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
