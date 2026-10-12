@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import { onMounted } from "vue";
 
 const DISCORD_SERVER = "https://discord.gg/gRVtzeF4AV"
