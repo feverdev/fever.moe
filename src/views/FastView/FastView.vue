@@ -1,119 +1,127 @@
-
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue"
 
 const card = ref<HTMLElement | null>(null)
-const mouseX = ref(50)
-const mouseY = ref(50)
+const currentTime = ref("")
 
 const socials = [
-  { name: "discord", url: "https://discord.com", icon: "discord" },
-  { name: "github", url: "https://github.com", icon: "github" },
-  { name: "spotify", url: "https://open.spotify.com", icon: "spotify" },
-  { name: "website", url: "https://example.com", icon: "globe" }
+  {
+    name: "discord",
+    url: "https://discord.com/user/994116541559865416/",
+    icon: "M19.73 4.36a19.8 19.8 0 0 0-4.88-1.51.07.07 0 0 0-.07.04c-.21.37-.44.86-.6 1.25a18.3 18.3 0 0 0-5.36 0c-.16-.4-.4-.88-.61-1.25a.07.07 0 0 0-.07-.04 19.7 19.7 0 0 0-4.88 1.51.06.06 0 0 0-.03.03C.14 8.93-.71 13.36-.27 17.74a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.98 3.02.07.07 0 0 0 .08-.03c.46-.63.87-1.29 1.22-1.99a.07.07 0 0 0-.04-.1 13.1 13.1 0 0 1-1.87-.89.07.07 0 0 1-.01-.12c.13-.1.25-.2.37-.3a.07.07 0 0 1 .07-.01c3.92 1.79 8.17 1.79 12.04 0a.07.07 0 0 1 .07.01c.12.1.24.2.37.3a.07.07 0 0 1-.01.12c-.6.35-1.22.65-1.87.89a.07.07 0 0 0-.04.1c.36.7.76 1.36 1.22 1.99a.07.07 0 0 0 .08.03 19.8 19.8 0 0 0 5.99-3.02.07.07 0 0 0 .03-.06c.52-5.06-.87-9.45-3.71-13.35a.06.06 0 0 0-.03-.03ZM8.02 14.76c-1.18 0-2.15-1.08-2.15-2.41s.95-2.41 2.15-2.41 2.17 1.09 2.15 2.41c0 1.33-.95 2.41-2.15 2.41Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41s.95-2.41 2.15-2.41 2.17 1.09 2.15 2.41c0 1.33-.95 2.41-2.15 2.41Z",
+  },
+  {
+    name: "github",
+    url: "https://github.com/fasttt33/",
+    icon: "M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.23-3.23-.12-.3-.53-1.53.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.23 0 4.62-2.8 5.64-5.48 5.94.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z",
+  },
+  {
+    name: "youtube",
+    url: "https://youtube.com/@fasttt33/",
+    icon: "M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z",
+  },
+  {
+    name: "website",
+    url: "https://fever.moe/",
+    icon: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3a15.6 15.6 0 0 0-1.4-3.6A8.1 8.1 0 0 1 18.9 8ZM12 4c.8 1.1 1.5 2.5 1.8 4h-3.6c.3-1.5 1-2.9 1.8-4ZM4.3 14a8 8 0 0 1 0-4h3.4a16.7 16.7 0 0 0 0 4H4.3Zm.8 2h3a15.6 15.6 0 0 0 1.4 3.6A8.1 8.1 0 0 1 5.1 16Zm3-8h-3a8.1 8.1 0 0 1 4.4-3.6A15.6 15.6 0 0 0 8.1 8ZM12 20c-.8-1.1-1.5-2.5-1.8-4h3.6c-.3 1.5-1 2.9-1.8 4Zm2.1-6H9.9a14.6 14.6 0 0 1 0-4h4.2a14.6 14.6 0 0 1 0 4Zm.4 5.6a15.6 15.6 0 0 0 1.4-3.6h3a8.1 8.1 0 0 1-4.4 3.6ZM16.3 14a16.7 16.7 0 0 0 0-4h3.4a8 8 0 0 1 0 4h-3.4Z",
+  },
 ]
 
+function updateTime() {
+  currentTime.value = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date())
+}
+
 function handleMouseMove(event: MouseEvent) {
-  const element = card.value
-  if (!element) return
+  if (!card.value) return
 
-  const rect = element.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
+  const rect = card.value.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width
+  const y = (event.clientY - rect.top) / rect.height
 
-  const rotateY = (x / rect.width - 0.5) * 10
-  const rotateX = (0.5 - y / rect.height) * 10
+  const rotateY = (x - 0.5) * 8
+  const rotateX = (0.5 - y) * 8
 
-  mouseX.value = (x / rect.width) * 100
-  mouseY.value = (y / rect.height) * 100
+  card.value.style.setProperty("--rotate-x", `${rotateX}deg`)
+  card.value.style.setProperty("--rotate-y", `${rotateY}deg`)
+  card.value.style.setProperty("--mouse-x", `${x * 100}%`)
+  card.value.style.setProperty("--mouse-y", `${y * 100}%`)
 
-  element.style.setProperty("--rotate-x", `${rotateX}deg`)
-  element.style.setProperty("--rotate-y", `${rotateY}deg`)
-  element.style.setProperty("--glow-x", `${mouseX.value}%`)
-  element.style.setProperty("--glow-y", `${mouseY.value}%`)
+  card.value.querySelectorAll<HTMLElement>("[data-depth]").forEach((element) => {
+    const depth = Number(element.dataset.depth || 1)
+    const moveX = (x - 0.5) * 16 * depth
+    const moveY = (y - 0.5) * 16 * depth
+
+    element.style.setProperty("--move-x", `${moveX}px`)
+    element.style.setProperty("--move-y", `${moveY}px`)
+  })
 }
 
 function resetCard() {
-  const element = card.value
-  if (!element) return
+  if (!card.value) return
 
-  element.style.setProperty("--rotate-x", "0deg")
-  element.style.setProperty("--rotate-y", "0deg")
-  element.style.setProperty("--glow-x", "50%")
-  element.style.setProperty("--glow-y", "0%")
+  card.value.style.setProperty("--rotate-x", "0deg")
+  card.value.style.setProperty("--rotate-y", "0deg")
+  card.value.style.setProperty("--mouse-x", "50%")
+  card.value.style.setProperty("--mouse-y", "50%")
+
+  card.value.querySelectorAll<HTMLElement>("[data-depth]").forEach((element) => {
+    element.style.setProperty("--move-x", "0px")
+    element.style.setProperty("--move-y", "0px")
+  })
 }
 
+let clockInterval: ReturnType<typeof setInterval>
+
 onMounted(() => {
-  window.addEventListener("mousemove", handleMouseMove)
+  updateTime()
+  clockInterval = setInterval(updateTime, 1000)
 })
 
 onUnmounted(() => {
-  window.removeEventListener("mousemove", handleMouseMove)
+  clearInterval(clockInterval)
 })
 </script>
 
 <template>
   <main class="page">
-    <div class="ambient ambient-one"></div>
-    <div class="ambient ambient-two"></div>
-
-    <div class="particles" aria-hidden="true">
-      <span
-        v-for="n in 22"
-        :key="n"
-        :style="{
-          '--i': n,
-          '--x': `${(n * 47.7) % 100}%`,
-          '--y': `${(n * 31.3) % 100}%`
-        }"
-      ></span>
-    </div>
-
     <section
       ref="card"
       class="profile-card"
       @mousemove="handleMouseMove"
       @mouseleave="resetCard"
     >
-      <div class="card-content">
-        <div class="avatar-container">
-          <img
-            class="avatar"
-            src="https://api.dicebear.com/9.x/shapes/svg?seed=fast&backgroundColor=080808&shape1Color=eeeeee&shape2Color=777777"
-            alt="avatar"
-          />
-          <span class="online-indicator"></span>
-        </div>
+      <div class="card-glow"></div>
+      <div class="card-noise"></div>
 
-        <div class="identity">
-          <div class="name-row">
-            <h1>fast</h1>
-            <svg class="verified" viewBox="0 0 24 24" aria-label="verified">
-              <path
-                d="M12 2.5l2.7 1.6 3.1-.1.9 3 2.3 2.1-1.1 2.9.6 3-2.6 1.8-1.3 2.8-3.1-.4-2.7 1.5-2.3-2.1-3-.7-.3-3.1-1.9-2.5 1.6-2.7.2-3.1 3-.8L12 2.5Z"
-                fill="currentColor"
-              />
-              <path
-                d="m8.5 12.1 2.2 2.2 4.8-4.8"
-                fill="none"
-                stroke="#080808"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+      <div class="card-content">
+        <header class="topbar" data-depth="0.4">
+
+          <span class="time">{{ currentTime }}</span>
+        </header>
+
+        <div class="profile" data-depth="1">
+          <div class="avatar-wrap">
+            <img
+              class="avatar"
+              src="https://avatars.githubusercontent.com/u/151259803?v=4"
+              alt="fast's avatar"
+            />
+            <span class="status-dot"></span>
           </div>
 
+          <h1>fast<span class="name-dot">.</span></h1>
           <p class="username">@fasttt33</p>
           <p class="bio">making things on the internet.</p>
         </div>
 
-        <div class="status">
-          <span class="status-dot"></span>
-          <span>probably listening to music</span>
-        </div>
+        <div class="divider"></div>
 
-        <div class="socials">
+        <nav class="socials" aria-label="social links" data-depth="0.6">
           <a
             v-for="social in socials"
             :key="social.name"
@@ -122,383 +130,394 @@ onUnmounted(() => {
             :title="social.name"
             target="_blank"
             rel="noopener noreferrer"
-            class="social"
+            class="social-link"
           >
-            <svg
-              v-if="social.icon === 'discord'"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path
-                d="M19.73 5.05a19.2 19.2 0 0 0-4.74-1.47.07.07 0 0 0-.08.04c-.2.35-.42.8-.58 1.16a17.7 17.7 0 0 0-5.3 0c-.16-.37-.39-.81-.59-1.16a.08.08 0 0 0-.08-.04 19.1 19.1 0 0 0-4.74 1.47.07.07 0 0 0-.03.03C.57 9.52-.25 13.85.16 18.12c0 .02.01.04.03.05a19.3 19.3 0 0 0 5.8 2.93.08.08 0 0 0 .08-.03c.45-.61.86-1.26 1.2-1.94a.08.08 0 0 0-.04-.11 12.7 12.7 0 0 1-1.81-.86.08.08 0 0 1-.01-.13l.36-.28a.07.07 0 0 1 .08-.01c3.8 1.73 7.91 1.73 11.66 0a.07.07 0 0 1 .08.01l.36.28a.08.08 0 0 1-.01.13c-.58.34-1.18.63-1.81.86a.08.08 0 0 0-.04.11c.35.68.75 1.33 1.2 1.94a.08.08 0 0 0 .08.03 19.2 19.2 0 0 0 5.8-2.93.08.08 0 0 0 .03-.05c.49-4.94-.82-9.23-3.45-13.04a.06.06 0 0 0-.03-.03ZM8.02 14.83c-1.14 0-2.08-1.05-2.08-2.34s.92-2.35 2.08-2.35c1.17 0 2.1 1.07 2.08 2.35 0 1.29-.92 2.34-2.08 2.34Zm7.69 0c-1.14 0-2.08-1.05-2.08-2.34s.91-2.35 2.08-2.35c1.16 0 2.09 1.07 2.08 2.35 0 1.29-.92 2.34-2.08 2.34Z"
-              />
-            </svg>
-
-            <svg
-              v-else-if="social.icon === 'github'"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path
-                d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.76-1.32-3.76-1.32-.51-1.3-1.24-1.65-1.24-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.71 2.63 1.22 3.27.93.1-.72.4-1.22.71-1.5-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.16-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.05 1.15a10.6 10.6 0 0 1 5.56 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.55.23 2.7.11 2.98.72.78 1.16 1.78 1.16 3 0 4.29-2.61 5.24-5.1 5.51.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"
-              />
-            </svg>
-
-            <svg
-              v-else-if="social.icon === 'spotify'"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path
-                d="M12 1.5A10.5 10.5 0 1 0 12 22.5 10.5 10.5 0 0 0 12 1.5Zm4.82 15.14a.65.65 0 0 1-.9.22c-2.47-1.51-5.58-1.85-9.24-1.02a.65.65 0 1 1-.29-1.26c4-.92 7.44-.52 10.21 1.16.31.19.41.59.22.9Zm1.28-2.84a.82.82 0 0 1-1.13.27c-2.83-1.74-7.14-2.24-10.48-1.23a.82.82 0 1 1-.48-1.57c3.82-1.16 8.57-.6 11.82 1.4.38.23.5.74.27 1.13Zm.11-2.96c-3.39-2.01-8.98-2.2-12.21-1.22a.98.98 0 1 1-.57-1.87c3.71-1.13 9.88-.91 13.78 1.41a.98.98 0 0 1-1 1.68Z"
-              />
-            </svg>
-
-            <svg
-              v-else
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.7"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path :d="social.icon" />
             </svg>
           </a>
-        </div>
+        </nav>
 
-        <div class="music">
-          <div class="album">
-            <span>f.</span>
+        <a
+          class="music-card"
+          href="https://soundcloud.com/buckshottt/buckshot-fakemink-fever"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-depth="0.9"
+        >
+          <div class="music-art">
+            <img
+              src="https://i.scdn.co/image/ab67616d0000b273dcd9e96e7e5a890a6572ed13"
+              alt="fever album artwork"
+            />
           </div>
 
-          <div class="track">
-            <span class="track-title">fever</span>
-            <span class="track-artist">buckshot, fakemink</span>
+          <div class="music-info">
+            <span class="music-label">currently into</span>
+            <span class="music-title">fever</span>
+            <span class="music-artist">buckshot, fakemink</span>
           </div>
 
-          <div class="equalizer" aria-label="music">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
+          <svg class="music-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 17 17 7M7 7h10v10" />
+          </svg>
+        </a>
       </div>
     </section>
   </main>
 </template>
 
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+<style>
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  color-scheme: dark;
+  font-family: "Inter", sans-serif;
+  background: #080808;
+  color: #f4f4f4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 * {
   box-sizing: border-box;
 }
 
-.page {
-  position: relative;
-  display: grid;
+body {
+  margin: 0;
+  min-width: 320px;
   min-height: 100vh;
-  min-height: 100dvh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
   place-items: center;
+  padding: 28px 18px;
   overflow: hidden;
-  padding: 24px;
-  isolation: isolate;
-  background: #050505;
-  color: #f5f5f5;
-  font-family: "Inter", sans-serif;
-}
-
-.ambient {
-  position: absolute;
-  z-index: -1;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  filter: blur(130px);
-  pointer-events: none;
-}
-
-.ambient-one {
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.ambient-two {
-  right: 10%;
-  bottom: -280px;
-  background: rgba(255, 255, 255, 0.025);
-}
-
-.particles {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.particles span {
-  position: absolute;
-  top: var(--y);
-  left: var(--x);
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: white;
-  opacity: 0;
-  animation: drift calc(5s + var(--i) * 0.3s) ease-in-out infinite;
-  animation-delay: calc(var(--i) * -0.5s);
-}
-
-@keyframes drift {
-  0%, 100% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  50% {
-    opacity: 0.35;
-    transform: translateY(-12px);
-  }
+  background:
+    radial-gradient(ellipse at 50% 45%, #171717 0%, #0c0c0c 38%, #080808 75%);
 }
 
 .profile-card {
   --rotate-x: 0deg;
   --rotate-y: 0deg;
-  --glow-x: 50%;
-  --glow-y: 0%;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
 
   position: relative;
-  width: min(100%, 360px);
-  padding: 30px;
+  width: min(100%, 390px);
+  padding: 1px;
+  border: 1px solid #303030;
+  border-radius: 25px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  background: rgba(13, 13, 13, 0.82);
+  isolation: isolate;
+  background: linear-gradient(145deg, #292929, #111111 45%, #242424);
   box-shadow:
-    0 30px 100px rgba(0, 0, 0, 0.65),
-    0 0 50px rgba(255, 255, 255, 0.025),
-    inset 0 1px rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(24px);
-  transform: perspective(1000px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+    0 30px 90px #00000080,
+    0 2px 8px #00000060,
+    inset 0 1px #ffffff0a;
+  transform:
+    perspective(1000px)
+    rotateX(var(--rotate-x))
+    rotateY(var(--rotate-y));
   transform-style: preserve-3d;
   transition:
-    transform 160ms ease-out,
-    border-color 250ms ease,
-    box-shadow 250ms ease;
-  animation: appear 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.profile-card::before {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    280px circle at var(--glow-x) var(--glow-y),
-    rgba(255, 255, 255, 0.075),
-    transparent 70%
-  );
-  content: "";
-  pointer-events: none;
-}
-
-.profile-card::after {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
-  opacity: 0.12;
-  content: "";
-  pointer-events: none;
+    transform 180ms ease-out,
+    box-shadow 300ms ease,
+    border-color 300ms ease;
+  will-change: transform;
 }
 
 .profile-card:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: #484848;
   box-shadow:
-    0 35px 100px rgba(0, 0, 0, 0.7),
-    0 0 60px rgba(255, 255, 255, 0.04),
-    inset 0 1px rgba(255, 255, 255, 0.06);
+    0 35px 100px #000000a0,
+    0 0 0 1px #ffffff05,
+    inset 0 1px #ffffff0c;
 }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: perspective(1000px) translateY(15px) scale(0.98);
-  }
+.card-glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    380px circle at var(--mouse-x) var(--mouse-y),
+    #ffffff0b,
+    transparent 70%
+  );
+}
 
-  to {
-    opacity: 1;
-    transform: perspective(1000px) translateY(0) scale(1);
-  }
+.card-noise {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.12;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
 }
 
 .card-content {
   position: relative;
-  z-index: 1;
+  padding: 25px;
+  border-radius: 24px;
+  background: linear-gradient(155deg, #151515f5, #0d0d0df7 65%, #111111f5);
+}
+
+.card-content > * {
+  position: relative;
+}
+
+[data-depth] {
+  transform: translate3d(var(--move-x, 0px), var(--move-y, 0px), 0);
+  transition: transform 220ms ease-out;
+  will-change: transform;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 43px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: #777777;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #eeeeee;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.brand-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  box-shadow: 0 0 10px #ffffff35;
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}
+
+.profile {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.avatar-container {
+.avatar-wrap {
   position: relative;
-  width: 84px;
-  height: 84px;
-  margin-bottom: 20px;
+  width: 92px;
+  height: 92px;
+  margin-bottom: 19px;
+  padding: 4px;
+  border: 1px solid #353535;
+  border-radius: 29px;
+  background: linear-gradient(145deg, #282828, #101010);
+  box-shadow: 0 8px 30px #00000070;
+  transform: rotate(-4deg);
+  transition:
+    transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 300ms ease;
+}
+
+.profile-card:hover .avatar-wrap {
+  transform: rotate(0deg) scale(1.04);
+  border-color: #555555;
 }
 
 .avatar {
   display: block;
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  background: #111;
+  border-radius: 24px;
   object-fit: cover;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.045);
+  background: #171717;
 }
 
-.online-indicator {
+.status-dot {
   position: absolute;
-  right: 2px;
-  bottom: 3px;
-  width: 14px;
-  height: 14px;
-  border: 3px solid #0d0d0d;
-  border-radius: 50%;
-  background: #eaeaea;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-.identity {
-  text-align: center;
-}
-
-.name-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-}
-
-.name-row h1 {
-  margin: 0;
-  color: #f8f8f8;
-  font-size: 27px;
-  font-weight: 800;
-  letter-spacing: -1.3px;
-}
-
-.verified {
+  right: -4px;
+  bottom: -4px;
   width: 15px;
   height: 15px;
-  color: white;
+  border: 3px solid #111111;
+  border-radius: 50%;
+  background: #d5d5d5;
+  box-shadow: 0 0 12px #ffffff20;
+}
+
+.profile h1 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  line-height: 1.1;
+}
+
+.name-dot {
+  color: #777777;
 }
 
 .username {
-  margin: 5px 0 0;
-  color: #696969;
+  margin: 8px 0 0;
+  color: #777777;
+  font-family: "DM Mono", monospace;
   font-size: 12px;
 }
 
 .bio {
-  margin: 18px 0 0;
-  color: #c3c3c3;
-  font-size: 12px;
-  line-height: 1.7;
+  margin: 17px 0 0;
+  color: #b3b3b3;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .status {
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 16px;
-  color: #737373;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 24px;
+  color: #858585;
+  font-family: "DM Mono", monospace;
   font-size: 10px;
+  letter-spacing: -0.02em;
 }
 
-.status-dot {
+.status-indicator {
   width: 5px;
   height: 5px;
+  flex: 0 0 auto;
   border-radius: 50%;
-  background: #ddd;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  background: #bdbdbd;
+  box-shadow: 0 0 9px #ffffff30;
+}
+
+.divider {
+  height: 1px;
+  margin: 25px 0 20px;
+  background: linear-gradient(90deg, transparent, #333333 20%, #333333 80%, transparent);
 }
 
 .socials {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 25px;
+  gap: 11px;
 }
 
-.social {
+.social-link {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 43px;
+  height: 43px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.025);
-  color: #aaa;
+  border: 1px solid #292929;
+  border-radius: 14px;
+  background: #171717;
+  color: #9a9a9a;
   transition:
-    color 180ms ease,
-    background 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
+    transform 200ms ease,
+    background 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
 }
 
-.social svg {
+.social-link:hover {
+  transform: translateY(-3px);
+  border-color: #505050;
+  background: #222222;
+  color: #ffffff;
+}
+
+.social-link svg {
   width: 17px;
   height: 17px;
+  fill: currentColor;
 }
 
-.social:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-}
-
-.music {
+.music-card {
   display: flex;
   align-items: center;
-  gap: 11px;
-  width: 100%;
+  gap: 13px;
+  min-height: 77px;
   margin-top: 25px;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.075);
-  border-radius: 11px;
-  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #292929;
+  border-radius: 17px;
+  background: linear-gradient(110deg, #1a1a1a, #121212);
+  transition:
+    transform 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease;
 }
 
-.album {
-  display: grid;
-  width: 39px;
-  height: 39px;
-  flex-shrink: 0;
-  place-items: center;
+.music-card:hover {
+  border-color: #454545;
+  background: linear-gradient(110deg, #202020, #151515);
+}
+
+.music-art {
+  width: 49px;
+  height: 49px;
+  flex: 0 0 auto;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 7px;
-  background:
-    radial-gradient(circle at 65% 25%, #777, transparent 40%),
-    linear-gradient(135deg, #282828, #080808 70%);
-  color: #f5f5f5;
-  font-size: 22px;
-  font-weight: 800;
-  font-style: italic;
+  border: 1px solid #383838;
+  border-radius: 12px;
+  background: #171717;
 }
 
-.track {
+.music-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-art span:nth-child(1) {
+  height: 12px;
+  animation-delay: -0.7s;
+}
+
+.music-art span:nth-child(2) {
+  height: 23px;
+  animation-delay: -0.2s;
+}
+
+.music-art span:nth-child(3) {
+  height: 16px;
+  animation-delay: -0.5s;
+}
+
+.music-art span:nth-child(4) {
+  height: 27px;
+  animation-delay: -0.1s;
+}
+
+.music-art span:nth-child(5) {
+  height: 10px;
+  animation-delay: -0.4s;
+}
+
+.music-info {
   display: flex;
   min-width: 0;
   flex: 1;
@@ -506,67 +525,73 @@ onUnmounted(() => {
   gap: 4px;
 }
 
-.track-title {
-  color: #eaeaea;
-  font-size: 11px;
+.music-label {
+  color: #707070;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.music-title {
+  overflow: hidden;
+  color: #ededed;
+  font-size: 13px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.track-artist {
-  color: #6c6c6c;
-  font-size: 10px;
+.music-artist {
+  overflow: hidden;
+  color: #858585;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.equalizer {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  height: 18px;
+.music-arrow {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: #777777;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    transform 200ms ease,
+    stroke 200ms ease;
 }
 
-.equalizer span {
-  width: 2px;
-  height: 5px;
-  border-radius: 2px;
-  background: #aaa;
-  animation: equalize 800ms ease-in-out infinite alternate;
-}
-
-.equalizer span:nth-child(2) {
-  animation-delay: -500ms;
-}
-
-.equalizer span:nth-child(3) {
-  animation-delay: -200ms;
-}
-
-.equalizer span:nth-child(4) {
-  animation-delay: -650ms;
-}
-
-.equalizer span:nth-child(5) {
-  animation-delay: -350ms;
+.music-card:hover .music-arrow {
+  transform: translate(2px, -2px);
+  stroke: #ffffff;
 }
 
 @keyframes equalize {
   from {
-    height: 4px;
-    opacity: 0.4;
+    transform: scaleY(0.45);
+    opacity: 0.55;
   }
 
   to {
-    height: 16px;
+    transform: scaleY(1);
     opacity: 1;
   }
 }
 
-@media (max-width: 480px) {
-  .page {
-    padding: 18px;
+@media (max-width: 420px) {
+  .card-content {
+    padding: 22px;
+  }
+
+  .topbar {
+    margin-bottom: 36px;
   }
 
   .profile-card {
-    padding: 25px;
+    border-radius: 22px;
   }
 }
 
@@ -576,7 +601,12 @@ onUnmounted(() => {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .profile-card {
+    transform: none;
   }
 }
 </style>
